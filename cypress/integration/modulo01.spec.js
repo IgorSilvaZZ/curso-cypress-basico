@@ -56,7 +56,7 @@ describe("Seção 3", () => {
     cy.get("input#firstName").type("Gabriel");
     cy.get("input#lastName").type("Lemos");
     cy.get("input#email").type("lemos@email.com");
-    cy.get("#phone-checkbox").click();
+    cy.get("#phone-checkbox").check();
     cy.get("textarea#open-text-area").type(
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
       {
