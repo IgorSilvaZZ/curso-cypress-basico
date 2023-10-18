@@ -15,6 +15,27 @@ describe("Seção 08", () => {
       .invoke("removeAttr", "target")
       .click();
 
+    cy.get("#title")
+      .contains("CAC TAT - Política de privacidade")
+      .should("be.visible");
+  });
+
+  it("testa a página da política de privacidade de forma independente", () => {
+    cy.get("a")
+      .contains("Política de Privacidade")
+      .invoke("removeAttr", "target")
+      .click();
+
     cy.get("#title").contains("CAC TAT - Política de privacidade");
+
+    cy.get(".privacy").should("be.visible");
+
+    cy.get("p").as("paragraphs").should("have.length", 4);
+
+    cy.get("@paragraphs").each(($paragraph) => {
+      cy.wrap($paragraph).should("be.visible");
+    });
+
+    cy.get(".privacy > p").contains("Talking About Testing");
   });
 });
