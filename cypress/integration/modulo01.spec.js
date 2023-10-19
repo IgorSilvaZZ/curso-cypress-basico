@@ -1,6 +1,8 @@
 /// <reference types='Cypress' />;
 
 describe("Seção 3", () => {
+  const THREE_SECONDS_IN_MS = 3000;
+
   beforeEach(() => {
     cy.visit("./src/index.html");
   });
@@ -11,38 +13,43 @@ describe("Seção 3", () => {
   });
 
   it("preenche os campos obrigatórios e envia o formulário", () => {
+    const longText = Cypress._.repeat("Lorem", 5);
+
     cy.get('input[id="firstName"]').type("Igor");
     cy.get('input[id="lastName"]').type("Silva");
     cy.get("input#email").type("igor@email.com");
     cy.get("select#product").select("cursos");
-    // cy.get('[type="radio]').check("elogio");
-    /// cy.get('input[type="checkbox"]').contains("E-mail").check();
-    cy.get("textarea#open-text-area").type(
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      {
-        delay: 0,
-      }
-    );
+    cy.get("textarea#open-text-area").invoke("val", longText);
+
+    cy.clock();
 
     cy.contains("button", "Enviar").click();
 
     cy.get(".success").should("be.visible");
+
+    cy.tick(THREE_SECONDS_IN_MS);
+
+    cy.get(".success").should("not.be.visible");
   });
 
   it("exibe mensagem de erro ao submeter o formulário com um email com formatação inválida", () => {
     cy.get('input[id="firstName"]').type("Igor");
     cy.get('input[id="lastName"]').type("Silva");
     cy.get("input#email").type("igor1email.com");
-    cy.get("textarea#open-text-area").type(
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      {
-        delay: 0,
-      }
+    cy.get("textarea#open-text-area").invoke(
+      "val",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
     );
+
+    cy.clock();
 
     cy.contains("button", "Enviar").click();
 
     cy.get(".error").should("be.visible");
+
+    cy.tick(THREE_SECONDS_IN_MS);
+
+    cy.get(".error").should("not.be.visible");
   });
 
   it("validando se o campo telefone só aceita numeros de fato", () => {
@@ -64,9 +71,15 @@ describe("Seção 3", () => {
       }
     );
 
+    cy.clock();
+
     cy.contains("button", "Enviar").click();
 
     cy.get(".error").should("be.visible");
+
+    cy.tick(THREE_SECONDS_IN_MS);
+
+    cy.get(".error").should("not.be.visible");
   });
 
   it("preenche e limpa os campos nome, sobrenome, email e telefone", () => {
@@ -90,12 +103,20 @@ describe("Seção 3", () => {
   });
 
   it("exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios", () => {
+    cy.clock();
+
     cy.get('button[type="submit"]').click();
 
     cy.get(".error").should("be.visible");
+
+    cy.tick(THREE_SECONDS_IN_MS);
+
+    cy.get(".error").should("not.be.visible");
   });
 
   it("envia o formuário com sucesso usando um comando customizado", () => {
+    cy.clock();
+
     cy.fillMandatoryFieldsAndSubmit({
       firstName: "Beatriz",
       lastName: "Santos",
@@ -103,5 +124,7 @@ describe("Seção 3", () => {
     });
 
     cy.get(".success").should("be.visible");
+
+    cy.tick(THREE_SECONDS_IN_MS);
   });
 });

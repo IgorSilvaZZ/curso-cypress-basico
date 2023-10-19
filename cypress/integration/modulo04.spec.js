@@ -1,3 +1,5 @@
+/// <reference types='Cypress' />;
+
 describe("Seção 08", () => {
   beforeEach(() => {
     cy.visit("./src/index.html");

@@ -1,15 +1,19 @@
+/// <reference types='Cypress' />;
+
 describe("Seção 07", () => {
   beforeEach(() => {
     cy.visit("./src/index.html");
   });
 
-  it("seleciona um arquivo da pasta fixtures", () => {
-    cy.get("#file-upload")
-      .should("not.have.value")
-      .selectFile("cypress/fixtures/example.json")
-      .should(($inputFile) => {
-        expect($inputFile[0].files[0].name).to.equal("example.json");
-      });
+  Cypress._.times(3, () => {
+    it("seleciona um arquivo da pasta fixtures", () => {
+      cy.get("#file-upload")
+        .should("not.have.value")
+        .selectFile("cypress/fixtures/example.json")
+        .should(($inputFile) => {
+          expect($inputFile[0].files[0].name).to.equal("example.json");
+        });
+    });
   });
 
   it("seleciona um arquivo simulando um drag-and", () => {
